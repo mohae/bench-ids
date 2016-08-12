@@ -17,6 +17,7 @@ var (
 	section        bool
 	sectionHeaders bool
 	systemInfo     bool
+	help           bool
 )
 
 func init() {
@@ -24,12 +25,14 @@ func init() {
 	flag.StringVar(&output, "o", "stdout", "output destination (short)")
 	flag.StringVar(&format, "format", "txt", "format of output")
 	flag.StringVar(&format, "f", "txt", "format of output")
+	flag.BoolVar(&help, "help", false, "help")
+	flag.BoolVar(&help, "h", false, "help")
 	flag.BoolVar(&nameSections, "namesections", false, "use group as section name: some restrictions apply")
 	flag.BoolVar(&nameSections, "n", false, "use group as section name: some restrictions apply")
 	flag.BoolVar(&section, "sections", false, "don't separate groups of tests into sections")
 	flag.BoolVar(&section, "s", false, "don't separate groups of tests into sections")
 	flag.BoolVar(&sectionHeaders, "sectionheader", false, "if there are sections, add a section header row")
-	flag.BoolVar(&sectionHeaders, "h", false, "if there are sections, add a section header row")
+	flag.BoolVar(&sectionHeaders, "r", false, "if there are sections, add a section header row")
 	flag.BoolVar(&systemInfo, "sysinfo", false, "add the system information to the output")
 	flag.BoolVar(&systemInfo, "i", false, "add the system information to the output")
 }
@@ -40,7 +43,18 @@ func main() {
 
 func realMain() int {
 	flag.Parse()
-
+	// check the args to see if help was passed w/o a -
+	args := flag.Args()
+	for _, v := range args {
+		if v == "help" {
+			help = true
+			break
+		}
+	}
+	if help {
+		flag.Usage()
+		return 1
+	}
 	// set up the ticker
 	done := make(chan struct{})
 	go benchutil.Dot(done)
