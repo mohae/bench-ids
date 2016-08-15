@@ -103,6 +103,7 @@ func realMain() int {
 	// psuedo-snowflake
 	bench.Append(BenchRSXID())
 	bench.Append(BenchSonySonyFlake())
+	bench.Append(BenchMohaeSnoflinga())
 
 	// uuid
 	bench.Append(BenchSatoriGoUUIDv1())

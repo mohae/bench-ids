@@ -9,6 +9,7 @@ import (
 	kasworldid "github.com/kasworld/idgen"
 	mitchellhuuid "github.com/mitchellh/packer/common/uuid"
 	"github.com/mohae/benchutil"
+	"github.com/mohae/snoflinga"
 	nu7hatchuuid "github.com/nu7hatch/gouuid"
 	rogpeppefastuuid "github.com/rogpeppe/fastuuid"
 	"github.com/rs/xid"
@@ -378,5 +379,22 @@ func BenchGoogleUUIDv5() benchutil.Bench {
 	bench.SubGroup = "128-bit"
 	bench.Desc = ""
 	bench.Result = benchutil.ResultFromBenchmarkResult(testing.Benchmark(googleUUIDv5))
+	return bench
+}
+
+func mohaeSnoflinga(b *testing.B) {
+	b.StopTimer()
+	gen := snoflinga.NewGenerator([]byte("test"))
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		gen.Snowflake()
+	}
+}
+
+func BenchMohaeSnoflinga() benchutil.Bench {
+	bench := benchutil.NewBench("github.com/mohae/snoflinga")
+	bench.Group = "psuedo-snowflake"
+	bench.SubGroup = "128-bit"
+	bench.Result = benchutil.ResultFromBenchmarkResult(testing.Benchmark(mohaeSnoflinga))
 	return bench
 }
