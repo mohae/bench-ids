@@ -10,6 +10,7 @@ import (
 	mitchellhuuid "github.com/mitchellh/packer/common/uuid"
 	"github.com/mohae/benchutil"
 	"github.com/mohae/snoflinga"
+	"github.com/nats-io/nuid"
 	nu7hatchuuid "github.com/nu7hatch/gouuid"
 	rogpeppefastuuid "github.com/rogpeppe/fastuuid"
 	"github.com/rs/xid"
@@ -400,3 +401,19 @@ func BenchMohaeSnoflinga() benchutil.Bench {
 	return bench
 }
 
+func natsioNUID(b *testing.B) {
+	n := nuid.New()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		n.Next()
+	}
+}
+
+func BenchNatsIONUID() benchutil.Bench {
+	bench := benchutil.NewBench("github.com/nats-io/nuid")
+	bench.Group = "psuedo-snowflake"
+	bench.SubGroup = "176-bit"
+	bench.Desc = ""
+	bench.Result = benchutil.ResultFromBenchmarkResult(testing.Benchmark(natsioNUID))
+	return bench
+}
