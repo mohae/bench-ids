@@ -51,12 +51,11 @@ func BenchKasworldIDGenUUID() benchutil.Bench {
 }
 
 func sumoryIDGen(b *testing.B) {
-	b.StopTimer()
 	err, w := sumoryid.NewIdWorker(0)
 	if err != nil {
 		return
 	}
-	b.StartTimer()
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		w.NextId()
 	}
@@ -228,12 +227,11 @@ func BenchSatoriGoUUIDv5() benchutil.Bench {
 }
 
 func RogPeppeFastUUID(b *testing.B) {
-	b.StopTimer()
 	g, err := rogpeppefastuuid.NewGenerator()
 	if err != nil {
 		return
 	}
-	b.StartTimer()
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		g.Next()
 	}
@@ -264,13 +262,12 @@ func BenchHashicorpGoUUID() benchutil.Bench {
 }
 
 func sonySonyFlake(b *testing.B) {
-	b.StopTimer()
 	var st sonyflake.Settings
 	st.MachineID = func() (uint16, error) {
 		return 42, nil
 	}
 	s := sonyflake.NewSonyflake(st)
-	b.StartTimer()
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		s.NextID()
 	}
@@ -286,12 +283,11 @@ func BenchSonySonyFlake() benchutil.Bench {
 }
 
 func sdmingGosnow(b *testing.B) {
-	b.StopTimer()
 	s, err := sdminggosnow.NewSnowFlake(42)
 	if err != nil {
 		return
 	}
-	b.StartTimer()
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		s.Next()
 	}
@@ -384,9 +380,8 @@ func BenchGoogleUUIDv5() benchutil.Bench {
 }
 
 func mohaeSnoflinga(b *testing.B) {
-	b.StopTimer()
 	gen := snoflinga.New([]byte("test"))
-	b.StartTimer()
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		gen.Snowflake()
 	}
