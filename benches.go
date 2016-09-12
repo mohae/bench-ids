@@ -10,6 +10,8 @@ import (
 	mitchellhuuid "github.com/mitchellh/packer/common/uuid"
 	"github.com/mohae/benchutil"
 	"github.com/mohae/snoflinga"
+	"github.com/mohae/snoflinga/sne"
+	"github.com/mohae/snoflinga/sno"
 	"github.com/nats-io/nuid"
 	nu7hatchuuid "github.com/nu7hatch/gouuid"
 	rogpeppefastuuid "github.com/rogpeppe/fastuuid"
@@ -393,6 +395,40 @@ func BenchMohaeSnoflinga() benchutil.Bench {
 	bench.SubGroup = "128-bit"
 	bench.Desc = "thread-safe"
 	bench.Result = benchutil.ResultFromBenchmarkResult(testing.Benchmark(mohaeSnoflinga))
+	return bench
+}
+
+func mohaeSnoflingaSno(b *testing.B) {
+	gen := sno.New([]byte("test"), 0)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		gen.Snowflake()
+	}
+}
+
+func BenchMohaeSnoflingaSno() benchutil.Bench {
+	bench := benchutil.NewBench("github.com/mohae/snoflinga/sno")
+	bench.Group = "psuedo-snowflake"
+	bench.SubGroup = "128-bit"
+	bench.Desc = "thread-safe"
+	bench.Result = benchutil.ResultFromBenchmarkResult(testing.Benchmark(mohaeSnoflingaSno))
+	return bench
+}
+
+func mohaeSnoflingaSne(b *testing.B) {
+	gen := sne.New([]byte("test"), 0)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		gen.Snowflake()
+	}
+}
+
+func BenchMohaeSnoflingaSne() benchutil.Bench {
+	bench := benchutil.NewBench("github.com/mohae/snoflinga/sne")
+	bench.Group = "psuedo-snowflake"
+	bench.SubGroup = "128-bit"
+	bench.Desc = "thread-safe"
+	bench.Result = benchutil.ResultFromBenchmarkResult(testing.Benchmark(mohaeSnoflingaSne))
 	return bench
 }
 

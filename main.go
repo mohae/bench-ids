@@ -104,7 +104,10 @@ func realMain() int {
 	bench.Append(BenchRSXID())
 	bench.Append(BenchSonySonyFlake())
 	bench.Append(BenchMohaeSnoflinga())
+	bench.Append(BenchMohaeSnoflingaSno())
+	bench.Append(BenchMohaeSnoflingaSne())
 	bench.Append(BenchNatsIONUID())
+
 	// uuid
 	bench.Append(BenchSatoriGoUUIDv1())
 	bench.Append(BenchGoogleUUIDv2())
