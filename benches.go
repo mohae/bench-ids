@@ -384,7 +384,7 @@ func BenchGoogleUUIDv5() benchutil.Bench {
 
 func mohaeSnoflinga(b *testing.B) {
 	b.StopTimer()
-	gen := snoflinga.NewGenerator([]byte("test"))
+	gen := snoflinga.New([]byte("test"))
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		gen.Snowflake()
@@ -395,6 +395,8 @@ func BenchMohaeSnoflinga() benchutil.Bench {
 	bench := benchutil.NewBench("github.com/mohae/snoflinga")
 	bench.Group = "psuedo-snowflake"
 	bench.SubGroup = "128-bit"
+	bench.Desc = "thread-safe"
 	bench.Result = benchutil.ResultFromBenchmarkResult(testing.Benchmark(mohaeSnoflinga))
 	return bench
 }
+
